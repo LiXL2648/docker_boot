@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用${propertyKey}的方式来引用配置项 -->
+    <properties resource="config.properties"/>
+    <!-- 在 MBG 工作的时候，需要额外加载的依赖包 location 属性指明加载 jar/zip 包的全路径 -->
+    <!--<classPathEntry location="${driver.location}"/>-->
+
+    <!-- context:生成一组对象的环境 -->
+    <context id="mysql" defaultModelType="flat" targetRuntime="MyBatis3Simple">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 使用tk.mybatis 插件自动生成代码 -->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="caseSensitive" value="true"/>
+        </plugin>
+
+        <!-- 连接数据库 -->
+        <jdbcConnection driverClass="${db.driverClass}" connectionURL="${db.url}"
+                        userId="${db.user}" password="${db.password}">
+        </jdbcConnection>
+
+        <!-- java 模型创建器 -->
+        <javaModelGenerator targetPackage="${package.name}.domain" targetProject="src/main/java"/>
+
+        <!-- 生成 SQL map 的 XML 文件生成器 -->
+        <sqlMapGenerator targetPackage="${package.name}.mapper.xml" targetProject="src/main/java"/>
+
+        <!-- 生成Mapper接口 -->
+        <javaClientGenerator targetPackage="${package.name}.mapper" targetProject="src/main/java" type="XMLMAPPER"/>
+
+        <!-- 选择一个table来生成相关文件 -->
+        <table tableName="t_user" domainObjectName="User">
+            <generatedKey column="id" sqlStatement="JDBC" />
+        </table>
+    </context>
+</generatorConfiguration>
